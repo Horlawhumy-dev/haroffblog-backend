@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -7,12 +8,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
+load_dotenv()
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k0i)2+oic3%y4285@@ri0=d5(5m289wt2ad3=xk2&6v((=4f7r'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
+DEBUG = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -29,7 +30,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_summernote',
     'corsheaders',
-    'blogapp'
+    'blogapp',
+    'subscription',
+    'contact'
 ]
 
 MIDDLEWARE = [
@@ -136,6 +139,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ]
 }

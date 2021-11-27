@@ -5,7 +5,18 @@ from django.template.defaultfilters import slugify
 
 class BlogCategory(models.Model):
     category = models.CharField(max_length=50)
+    slug = models.SlugField()
     date_created = models.DateTimeField(blank=True, default=datetime.now())
+
+    # def save(self, *args, **kwargs):
+    #     Splittedcat = self.category.lower().split(" ")
+    #     self.category = "-".join(Splittedcat)
+    #     super(BlogCategory, self).save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.category)
+        super(BlogCategory, self).save(*args, **kwargs)
+
 
     def __str__(self):
         return self.category
@@ -22,18 +33,19 @@ class BlogPost(models.Model):
     month = models.CharField(max_length=10)
     day = models.IntegerField()
     featured = models.BooleanField(default=False)
+    recent = models.BooleanField(default=False)
     date_created = models.DateTimeField(default=datetime.now(), blank=True)
 
 
     def save(self, *args, **kwargs):
         original_slug = slugify(self.title)
-        queryset = BlogPost.object.all().filter(slug__iexact=original_slug).count()
+        queryset = BlogPost.objects.all().filter(slug__iexact=original_slug).count()
         count = 1
-
+        slug = original_slug
         while(queryset):
             slug = original_slug + '-' + count
             count = count + 1
-            queryset = BlogPost.object.all().filter(slug__iexact=slug).count()
+            queryset = BlogPost.objects.all().filter(slug__iexact=slug).count()
             
         
         self.slug = slug
