@@ -15,6 +15,12 @@ class BlogPostListView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = BlogPostSerializer
 
+class BlogPostDetailView(RetrieveAPIView):
+    queryset = BlogPost.objects.order_by('-date_created')
+    lookup_field = 'slug'
+    permission_classes = [AllowAny]
+    serializer_class = BlogPostSerializer
+
 
 class BlogPostFeaturedView(ListAPIView):
     queryset = BlogPost.objects.filter(featured=True).order_by('-date_created')

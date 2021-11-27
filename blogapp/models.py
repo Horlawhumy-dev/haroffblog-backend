@@ -41,14 +41,13 @@ class BlogPost(models.Model):
         original_slug = slugify(self.title)
         queryset = BlogPost.objects.all().filter(slug__iexact=original_slug).count()
         count = 1
-        slug = original_slug
+        postSlug = original_slug
         while(queryset):
-            slug = original_slug + '-' + count
+            postSlug = original_slug + '-' + str(count)
             count = count + 1
-            queryset = BlogPost.objects.all().filter(slug__iexact=slug).count()
-            
-        
-        self.slug = slug
+            queryset = BlogPost.objects.all().filter(slug__iexact=postSlug).count()
+
+        self.slug = postSlug
 
         if self.featured:
             try:
