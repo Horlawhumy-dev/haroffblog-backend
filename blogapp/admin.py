@@ -10,6 +10,14 @@ class BlogPostAdmin(SummernoteModelAdmin):
     list_per_page = 25
     summernote_fields = ('content',)
 
+
+class BlogCategoryAdmin(admin.ModelAdmin):
+    exclude = ('slug',)
+    list_display = ('id', 'category', 'slug', 'date_created')
+    list_display_links = ('id', 'category')
+    search_fields = ('category',)
+    list_per_page = 25
+
 admin.site.register(BlogPost, BlogPostAdmin)
-admin.site.register(BlogCategory)
+admin.site.register(BlogCategory, BlogCategoryAdmin)
 

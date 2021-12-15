@@ -8,15 +8,18 @@ class BlogCategory(models.Model):
     slug = models.SlugField()
     date_created = models.DateTimeField(blank=True, default=datetime.now())
 
-    # def save(self, *args, **kwargs):
-    #     Splittedcat = self.category.lower().split(" ")
-    #     self.category = "-".join(Splittedcat)
-    #     super(BlogCategory, self).save(*args, **kwargs)
-
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.category)
-        super(BlogCategory, self).save(*args, **kwargs)
+        original_slug = slugify(self.category)
+        queryset = BlogCategory.objects.all().filter(slug__iexact=original_slug).count()
+        count = 1
+        postSlug = original_slug
+        while(queryset):
+            postSlug = original_slug.lower() + '-' + str(count)
+            count = count + 1
+            queryset = BlogCategory.objects.all().filter(slug__iexact=postSlug).count()
 
+        self.slug = postSlug
+        super(BlogCategory, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.category
@@ -43,7 +46,7 @@ class BlogPost(models.Model):
         count = 1
         postSlug = original_slug
         while(queryset):
-            postSlug = original_slug + '-' + str(count)
+            postSlug = original_slug.lower() + '-' + str(count)
             count = count + 1
             queryset = BlogPost.objects.all().filter(slug__iexact=postSlug).count()
 

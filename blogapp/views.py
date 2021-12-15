@@ -6,6 +6,7 @@ from .serializers import BlogPostSerializer, BlogCategorySerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from .pagination import BlogPagination
 
 from .models import BlogCategory, BlogPost
 
@@ -14,6 +15,7 @@ class BlogPostListView(ListAPIView):
     lookup_field = 'slug'
     permission_classes = [AllowAny]
     serializer_class = BlogPostSerializer
+    pagination_class = BlogPagination
 
 class BlogPostDetailView(RetrieveAPIView):
     queryset = BlogPost.objects.order_by('-date_created')
@@ -30,7 +32,7 @@ class BlogPostFeaturedView(ListAPIView):
 
 class BlogPostRecentView(ListAPIView):
     queryset = BlogPost.objects.filter(recent=True).order_by('-date_created')
-    lookup_field = 'slug'
+    # lookup_field = 'slug'
     permission_classes = [AllowAny]
     serializer_class = BlogPostSerializer
 
