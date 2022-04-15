@@ -1,0 +1,88 @@
+version: '1'
+
+services:
+  # haroffcode-server:
+  #   build:
+  #     context: . #Sets the directory for docker-compose to build.
+
+  #   # Maps port on the local machine to port on Docker image
+  #   ports:
+  #     - "8000:8000"
+  db:
+    image: postgres
+    restart: always
+    env_file:
+      - ./.env
+  web:
+    build: .
+    stdin_open: true
+    tty: true
+    command: sh -c "python manage.py runserver 0.0.0.0:8000" 
+    restart: always
+    volumes:
+      - .:/haroffblog-server
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# # Verion of docker-compose to use 
+# version: "1"
+
+# services:
+#   haroffcode-server:
+#     build:
+#       context: . #Sets the directory for docker-compose to build.
+
+#     # Maps port on the local machine to port on Docker image
+#     ports:
+#       - "8000:8000"
+      
+#     volumes: 
+#     # Copy changes made to the project to your image in real-time.
+#       - .:/haroffcode-server
+#     # The environment variable credetials that is needed 
+#     # in the settings for Postgres.
+
+#     command: sh -c "python manage.py runserver 0.0.0.0:8000" 
+
+#     environment:
+#       - DB_HOST=initdb
+#       - DB_NAME=recipe
+#       - DB_USER=postgres
+#       - DB_PASS=12Facebook@6
+#     depends_on:
+#       - initdb
+#     DEBUG: 'true'
+
+#     # Handles the command used to run the project in the Docker container.
+ 
+
+#     initdb:
+#       image: postgres:14
+#       restart: always
+#       environment:
+#         # credentials required by postgres:10-alpine
+#         - PGDATABASE=haroffblog
+#         - PGUSER=postgres
+#         - PGPASSWORD=12Facebook@6
+#         - PGHOST=localhost
+#         - PGPORT=5432

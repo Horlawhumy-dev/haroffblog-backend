@@ -15,7 +15,7 @@ DEBUG = False
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -75,11 +75,11 @@ WSGI_APPLICATION = 'haroffblog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': str(os.getenv('NAME')),
-        'USER': str(os.getenv('USER')),
-        'PASSWORD': str(os.getenv('PASSWORD')),
-        'HOST': str(os.getenv('HOST')),
-        'PORT': os.getenv('PORT')
+        'NAME': str(os.getenv('PGDATABASE')),
+        'USER': str(os.getenv('PGUSER')),
+        'PASSWORD': str(os.getenv('PGPASSWORD')),
+        'HOST': str(os.getenv('PGHOST')),
+        'PORT': os.getenv('PGPORT')
     }
 }
 
